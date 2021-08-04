@@ -1,20 +1,19 @@
 const express = require('express')
 const router = express.Router()
 
-const Group = require('../models/group')
+const Message = require('../models/group-model')
 
-// Group home route
+// Group messages home route
 router.get('/group', (req, res) => {
-  Group.find({})
+  Message.find({})
   .then(g => res.json(g))
 })
 
 // Create 
 router.post('/group', (req, res) => {
-  let message = req.body.message
-  let likes = req.body.likes
-  Group.create({
-    message, likes
+  let messageBody = req.body.messageBody
+  Message.create({
+    messageBody
   })
   .then(g => res.json(g))
   .catch(console.error)
@@ -23,13 +22,12 @@ router.post('/group', (req, res) => {
 // Update 
 router.put('/group', (req, res) => {
   let id = req.body._id
-  let message = req.body.message
-  let likes = req.body.likes
+  let messageBody = req.body.messageBody
   console.log(req.body)
-  Group.findOneAndUpdate(
+  Message.findOneAndUpdate(
     {_id: id},
     {
-      message, likes
+      messageBody
     },
     {new: true}
   )
@@ -39,7 +37,7 @@ router.put('/group', (req, res) => {
 // Delete 
 router.delete('/group', (req, res) => {
   const id = req.body._id 
-  Group.findOneAndRemove({_id: id})
+  Message.findOneAndRemove({_id: id})
   .then(g => res.json(g))
   .catch(console.error)
 })
